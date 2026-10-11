@@ -7,9 +7,10 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 
 const OUT = 'src/assets/img/fotos';
-const SIZES = [400, 720, 1080];
+const SIZES = [160, 400, 720, 1080];
 
-// nombre → { src, foco } · foco = punto (0–1) hacia el que se desplaza el recorte cuadrado
+// nombre → { src, foco, zoom } · foco = punto (0–1) hacia el que se desplaza el recorte cuadrado;
+// zoom > 1 cierra el encuadre cuando el plato sale pequeño en la foto
 const FOTOS = {
   'burger-cabra':      { src: 'g33-hamburguesa-cabra-burger.jpg', foco: [0.5, 0.55] },
   'burger-pulled':     { src: 'g34-hamburguesa-pulled-pork.jpg', foco: [0.5, 0.5] },
@@ -29,28 +30,33 @@ const FOTOS = {
   'costilla':          { src: 'g59-costillas-a-la-bbq.jpg', foco: [0.5, 0.5] },
   'pollo-curry':       { src: 'g63-pollo-al-curry.jpg', foco: [0.5, 0.5] },
   'pasta-del-mar':     { src: 'pasta-del-mar-maps.jpg', foco: [0.5, 0.5] },
+  'calzone':           { src: 'g43-pizza-calzonne-gula-33-cm.jpg', foco: [0.5, 0.5] },
+  'pasta-cremosa':     { src: 'g40-pasta-cremosa.jpg', foco: [0.5, 0.5] },
+  'pizza-cheesey':     { src: 'g46-pizza-cheesey-33-cm.jpg', foco: [0.5, 0.5] },
+  'alcachofitas':      { src: 'g09-alcachofitas-crujientes-con-foie.jpg', foco: [0.52, 0.5], zoom: 1.7 },
+  'burger-supreme':    { src: 'g36-hamburguesa-supreme.jpg', foco: [0.5, 0.5] },
   'ensalada-cesar':    { src: 'g05-ensalada-cesar.jpg', foco: [0.5, 0.5] },
 };
 
 await fs.mkdir(OUT, { recursive: true });
 
-async function cuadrado(file, [fx, fy]) {
+async function cuadrado(file, [fx, fy], zoom = 1) {
   // Quita el marco blanco que añade Glovo y recorta un cuadrado hacia el foco
   const buf = await sharp(path.join('raw', file)).rotate().flatten({ background: '#ffffff' })
     .trim({ background: '#ffffff', threshold: 18 }).toBuffer();
   const { width: w, height: h } = await sharp(buf).metadata();
-  const s = Math.min(w, h);
+  const s = Math.round(Math.min(w, h) / zoom);
   const left = Math.round(Math.max(0, Math.min(w - s, fx * w - s / 2)));
   const top = Math.round(Math.max(0, Math.min(h - s, fy * h - s / 2)));
   return { img: sharp(buf).extract({ left, top, width: s, height: s }), lado: s };
 }
 
 const informe = [];
-for (const [nombre, { src, foco }] of Object.entries(FOTOS)) {
-  const { img, lado } = await cuadrado(src, foco);
+for (const [nombre, { src, foco, zoom }] of Object.entries(FOTOS)) {
+  const { img, lado } = await cuadrado(src, foco, zoom);
   const base = await img.sharpen({ sigma: 0.6 }).toBuffer();
   for (const w of SIZES) {
-    if (w > lado * 1.15 && w !== SIZES[0]) continue; // no ampliar fotos pequeñas
+    if (w > lado * 1.15 && w > 400) continue; // no ampliar fotos pequeñas
     await sharp(base).resize(w, w).webp({ quality: 74, effort: 6 }).toFile(`${OUT}/${nombre}-${w}.webp`);
   }
   informe.push(`${nombre}: ${lado}px`);

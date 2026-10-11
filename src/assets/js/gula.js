@@ -256,6 +256,69 @@
     }
   }
 
+  // Carta: al pasar el ratón por un plato con foto real, el plato grande de la
+  // sección gira y lo muestra (con su nombre y precio); al salir vuelve al de la sección.
+  // Solo con ratón: en táctil no hay «pasar por encima» y la miniatura ya enseña la foto.
+  if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    document.querySelectorAll('.carta-sec').forEach(function (sec) {
+      var fig = sec.querySelector('[data-plato-seccion]');
+      var filas = sec.querySelectorAll('.plato--foto');
+      if (!fig || !filas.length) return;
+      var caja = fig.querySelector('.carta-sec__foto');
+      var img = caja.querySelector('img');
+      var pieNombre = fig.querySelector('[data-pie-nombre]');
+      var piePrecio = fig.querySelector('[data-pie-precio]');
+      var original = { srcset: img.srcset, alt: img.alt, nombre: pieNombre.textContent, precio: piePrecio.textContent };
+      var mostrado = original.srcset, espera = null, vuelta = null;
+
+      var mostrar = function (d) {
+        if (d.srcset === mostrado) return;
+        mostrado = d.srcset;
+        var carga = new Image();
+        carga.sizes = img.sizes;
+        carga.srcset = d.srcset;
+        (carga.decode ? carga.decode() : Promise.resolve()).catch(function () {}).then(function () {
+          if (mostrado !== d.srcset) return; // el ratón ya se ha ido a otro plato
+          var cambiar = function () {
+            img.srcset = d.srcset;
+            img.alt = d.alt;
+            pieNombre.textContent = d.nombre;
+            piePrecio.textContent = d.precio;
+          };
+          if (!MO) { cambiar(); return; }
+          caja.animate([
+            { opacity: 1, transform: 'rotate(0deg) scale(1)' },
+            { opacity: 0, transform: 'rotate(30deg) scale(.94)', offset: 0.45 },
+            { opacity: 0, transform: 'rotate(-18deg) scale(.96)', offset: 0.5 },
+            { opacity: 1, transform: 'rotate(0deg) scale(1)' }
+          ], { duration: 380, easing: EASE_OUT });
+          setTimeout(cambiar, 175);
+        });
+      };
+      filas.forEach(function (fila) {
+        var datos = {
+          srcset: fila.getAttribute('data-foto-srcset'),
+          alt: fila.getAttribute('data-foto-alt'),
+          nombre: fila.getAttribute('data-nombre'),
+          precio: fila.getAttribute('data-precio')
+        };
+        fila.addEventListener('pointerenter', function () {
+          clearTimeout(vuelta);
+          clearTimeout(espera);
+          filas.forEach(function (f) { f.classList.toggle('plato--activo', f === fila); });
+          espera = setTimeout(function () { mostrar(datos); }, 90); // al pasar de largo no gira
+        });
+      });
+      sec.querySelector('.carta-sec__cuerpo').addEventListener('pointerleave', function () {
+        clearTimeout(espera);
+        vuelta = setTimeout(function () {
+          filas.forEach(function (f) { f.classList.remove('plato--activo'); });
+          mostrar(original);
+        }, 600);
+      });
+    });
+  }
+
   if (!MO) return;
 
   // Revelados al hacer scroll: una sola vez, con escalonado entre hermanos
@@ -264,7 +327,9 @@
     ['.antojos__intro, .bocatas__cab > p, .cocina__cab p, .dias__in > div > p, .donde__texto > p, .donde address, .donde__acciones, .domicilio, .opinan__pie, .donde__sub, .tel-gigante', 'rv-sube', false],
     ['.datos__lista li, .bocata, .fiestas li, .opinan__citas li, .horario tr', 'rv-sube', true],
     ['.cocina__rejilla figure', 'rv-cortina', true],
-    ['.carta-sec__foto, .pie__sello', 'rv-plato', false]
+    ['.carta-sec__foto, .carta-sec__plato--letras, .pie__sello', 'rv-plato', false],
+    ['.carta-sec__datos, .carta-sec__nota, .carta-sec__pie, .carta-fin__in > p', 'rv-sube', false],
+    ['.carta-sec__cuenta, .carta-sec .pegatina--linea', 'rv-pop', false]
   ];
   var pendientes = [];
   var alVer = []; // acciones que se lanzan una vez cuando su elemento entra en pantalla

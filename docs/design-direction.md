@@ -125,3 +125,22 @@ Tras revisar la web contra el CLAUDE.md, la crítica fue justa: salvo el anillo,
 - Que el turquesa haga ilegible el texto: el texto pequeño sobre marea va en leche (≥ 4,5:1); la tinta solo en tamaños grandes.
 - Fotos de móvil estiradas: tamaños máximos controlados y `srcset`.
 - Inventar: sin precio de menú del día, sin nombres del equipo, sin datos estructurados de valoración.
+
+## La carta (tercera revisión, 11/10/2026)
+
+**Diagnóstico de partida:** nueve secciones idénticas sobre el mismo fondo claro (un muro de texto, §9 del CLAUDE.md), una cabecera sin comida, fotos reales de más de veinte platos sin usar y un fallo visible: «HAMBURGUE·SAS» y «PLATOS COMBINADO·S» se partían a mitad de palabra en escritorio.
+
+**Idea: la carta se sirve en platos.** Es el mismo lenguaje de la portada (el plato redondo), aplicado a navegar y a leer:
+
+| Pieza | Qué hace | Por qué |
+|---|---|---|
+| **«La mesa»** (cabecera) | nueve platos vistos desde arriba, uno por sección, con su número de platos y precio mínimo; cada uno lleva a su sección. Entran cayendo y girando en ola | índice visual: en un vistazo se ve qué hay y desde cuánto. Los desayunos, sin foto real, tienen un plato tipográfico («Café y tostada») en vez de una imagen inventada |
+| **Tono por sección** | desayunos en tinta (la pizarra del bar), pizzas y hamburguesas juntas en turquesa (comparten «bebida incluida»), bocadillos en tinta, niños en yema, el resto en leche | ritmo y agrupación con sentido; rompe el muro de texto |
+| **Cabecera de sección** | título + número de platos en un círculo amarillo + «N en la carta · desde X €» + pegatina; debajo, el plato de la sección con borde de plato y su pie con nombre y precio | jerarquía clara y datos útiles antes de leer la lista |
+| **Miniaturas reales** | 22 platos de la carta llevan su foto real en miniatura junto al nombre | señala qué platos se pueden ver; nunca se pone foto a un plato que no la tiene |
+| **El plato cambia al que miras** (escritorio) | al pasar el ratón por un plato con foto, el plato grande de la sección gira (380 ms) y lo muestra con su nombre y precio; al salir vuelve al de la sección | convierte la lista en algo que se explora; solo con ratón, con 90 ms de espera para que no gire al pasar de largo |
+| **Barra de progreso** | línea amarilla bajo la barra de categorías que avanza con la lectura | orientación en una página de 100 platos y opciones (82 de carta más 18 de desayuno) |
+| **Platos que giran con el scroll** | los platos de cada sección giran despacio al bajar | eco del sello y del plato de la portada |
+| **Cierre** | bloque turquesa con «¿Ya sabes lo que quieres?» y el teléfono a tamaño titular | la acción principal (llamar), con la presencia que merece |
+
+Todos los números (platos, «desde X €») salen de `carta.json` en el build: si cambia la carta, cambian solos. El build falla si una foto se asigna a un plato que no existe.

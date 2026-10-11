@@ -18,6 +18,7 @@ http.createServer(async (req, res) => {
     res.end(data);
   } catch {
     res.writeHead(404, { 'Content-Type': TIPOS['.html'] });
-    res.end(await fs.readFile('dist/404.html'));
+    // Durante un build dist/ puede no existir un instante: no tumbar el servidor
+    res.end(await fs.readFile('dist/404.html').catch(() => 'No encontrado'));
   }
 }).listen(PORT, () => console.log(`http://localhost:${PORT}${BASE}/`));

@@ -38,10 +38,15 @@ function precio(ref) {
 }
 
 // ---------- fotos ----------
+const ANCHOS = [160, 400, 720, 1080];
+function srcsetDe(nombre) {
+  const anchos = ANCHOS.filter((w) => fotosDisponibles.has(`${nombre}-${w}.webp`));
+  if (!anchos.length) errores.push(`Foto inexistente: ${nombre}`);
+  return { anchos, srcset: anchos.map((w) => `assets/img/fotos/${nombre}-${w}.webp ${w}w`).join(', ') };
+}
 function foto(nombre, alt, sizes = '(min-width: 900px) 40vw, 80vw', extra = '') {
-  const anchos = [400, 720, 1080].filter((w) => fotosDisponibles.has(`${nombre}-${w}.webp`));
-  if (!anchos.length) { errores.push(`Foto inexistente: ${nombre}`); return ''; }
-  const srcset = anchos.map((w) => `assets/img/fotos/${nombre}-${w}.webp ${w}w`).join(', ');
+  const { anchos, srcset } = srcsetDe(nombre);
+  if (!anchos.length) return '';
   const media = anchos.includes(720) ? 720 : anchos.at(-1);
   const carga = /eager/.test(extra) ? '' : ' loading="lazy" decoding="async"';
   return `<img src="assets/img/fotos/${nombre}-${media}.webp" srcset="${srcset}" sizes="${sizes}" width="${media}" height="${media}" alt="${esc(alt)}"${carga}${extra ? ' ' + extra.replace('eager', 'fetchpriority="high"') : ''}>`;
@@ -64,46 +69,108 @@ function tablaHorario() {
 }
 
 // ---------- bloques generados ----------
+// Foto del plato grande de cada sección (y el plato al que corresponde, para su pie)
 const FOTO_SECCION = {
-  entrantes: ['huevos-rotos', 'Huevos rotos con jamón serrano y pimiento frito, en la cazuelita negra de Gula'],
-  ensaladas: ['ensalada-cesar', 'Ensalada César de Gula con pollo crujiente, picatostes y salsa'],
-  pastas: ['pasta-del-mar', 'Pasta del mar de Gula: tagliatelle con mejillones y gambas'],
-  pizzas: ['pizza-san-remo', 'Pizza San Remo de Gula con jamón serrano, rúcula, tomate cherry y grana padano'],
-  hamburguesas: ['burger-iberica', 'Hamburguesa Ibérica de Gula con jamón ibérico y patatas'],
-  bocadillos: ['bocadillo-pollo', 'Bocadillo de Gula con pollo, bacón y huevo frito sobre tabla de madera'],
-  combinados: ['costilla', 'Costilla a la barbacoa de Gula con patatas y verdura a la plancha'],
-  ninos: ['burger-granito', 'Hamburguesa con patatas de Gula sobre tabla de madera'],
+  entrantes: ['huevos-rotos', 'entrantes/Huevos rotos con jamón serrano'],
+  ensaladas: ['ensalada-cesar', 'ensaladas/César'],
+  pastas: ['pasta-del-mar', 'pastas/Del mar'],
+  pizzas: ['pizza-san-remo', 'pizzas/San Remo'],
+  hamburguesas: ['burger-iberica', 'hamburguesas/Ibérica'],
+  bocadillos: ['bocadillo-calamar', 'bocadillos/Calamar a la romana'],
+  combinados: ['costilla', 'combinados/Costilla a la barbacoa'],
+  ninos: ['burger-granito', 'ninos/Hamburguesa infantil con patatas'],
 };
+// Platos con foto real del propio restaurante (Glovo, Google Maps)
+const FOTO_PLATO = {
+  'entrantes/Huevos rotos con jamón serrano': 'huevos-rotos',
+  'entrantes/Calamar a la romana': 'calamares',
+  'entrantes/Albóndigas en salsa de tomate': 'albondigas',
+  'entrantes/Patatas bravas': 'bravas',
+  'entrantes/Alitas de pollo al grill': 'alitas',
+  'entrantes/Sepia a la plancha con salsa verde': 'sepia',
+  'entrantes/Alcachofitas crujientes con foie': 'alcachofitas',
+  'ensaladas/César': 'ensalada-cesar',
+  'pastas/Del mar': 'pasta-del-mar',
+  'pastas/Cremosa': 'pasta-cremosa',
+  'pizzas/San Remo': 'pizza-san-remo',
+  'pizzas/Pulled pork': 'pizza-pulled',
+  'pizzas/Calzone Gula': 'calzone',
+  'pizzas/Cheesey': 'pizza-cheesey',
+  'hamburguesas/Pulled pork': 'burger-pulled',
+  'hamburguesas/Cabra burger': 'burger-cabra',
+  'hamburguesas/Ibérica': 'burger-iberica',
+  'hamburguesas/Supreme': 'burger-supreme',
+  'bocadillos/Calamar a la romana': 'bocadillo-calamar',
+  'combinados/Costilla a la barbacoa': 'costilla',
+  'combinados/Pollo al curry': 'pollo-curry',
+  'ninos/Hamburguesa infantil con patatas': 'burger-granito',
+};
+for (const ref of Object.keys(FOTO_PLATO)) buscarPlato(ref);
+for (const [, ref] of Object.values(FOTO_SECCION)) buscarPlato(ref);
+
+// Tono de fondo de cada sección: ritmo y agrupación (pizzas y hamburguesas comparten «bebida incluida»)
+const TONO = { desayunos: 'tinta', pizzas: 'marea', hamburguesas: 'marea', bocadillos: 'tinta', ninos: 'yema' };
 const AVISOS = {
   pizzas: 'Bebida de 33 cl incluida',
   hamburguesas: 'Patatas y bebida incluidas',
 };
+const PLATO_DESAYUNO = 'Café y tostada'; // los desayunos no tienen foto real: plato tipográfico
 
-function filaPlato(p) {
+const esPlato = (p) => !/^Extra/.test(p.nombre);
+function resumen(s) {
+  const platos = platosDe(s).filter(esPlato);
+  const precios = platos.map((p) => p.precio).filter((n) => typeof n === 'number');
+  return { n: platos.length, desde: precios.length ? Math.min(...precios) : null };
+}
+const altPlato = (nombre, secTitulo) => `${nombre} de Gula (${secTitulo.toLowerCase()}), foto del restaurante`;
+
+function filaPlato(p, s) {
+  const ref = `${s.id}/${p.nombre}`;
   const pr = typeof p.precio === 'number' ? `<span class="plato__precio">${euros(p.precio)}</span>` : '';
-  return `<li class="plato">
-            <div class="plato__linea"><span class="plato__nombre">${esc(p.nombre)}</span>${pr}</div>${p.desc ? `\n            <p class="plato__desc">${esc(p.desc)}</p>` : ''}
+  const fotoP = FOTO_PLATO[ref];
+  let attrs = '', mini = '';
+  if (fotoP) {
+    const { srcset } = srcsetDe(fotoP);
+    attrs = ` data-foto-srcset="${srcset}" data-foto-alt="${esc(altPlato(p.nombre, s.titulo))}" data-nombre="${esc(p.nombre)}" data-precio="${typeof p.precio === 'number' ? euros(p.precio) : ''}"`;
+    mini = ` <span class="plato__mini" aria-hidden="true"><img src="assets/img/fotos/${fotoP}-160.webp" srcset="${srcset}" sizes="44px" width="44" height="44" alt="" loading="lazy" decoding="async"></span>`;
+  }
+  return `<li class="plato${fotoP ? ' plato--foto' : ''}"${attrs}>
+            <div class="plato__linea"><span class="plato__nombre">${esc(p.nombre)}${mini}</span>${pr}</div>${p.desc ? `\n            <p class="plato__desc">${esc(p.desc)}</p>` : ''}
           </li>`;
+}
+
+function cabeceraPlato(s) {
+  const f = FOTO_SECCION[s.id];
+  if (!f) return `<div class="carta-sec__plato carta-sec__plato--letras" aria-hidden="true"><span>${PLATO_DESAYUNO}</span></div>`;
+  const p = buscarPlato(f[1]);
+  return `<figure class="carta-sec__plato" data-plato-seccion>
+          <div class="carta-sec__foto">${foto(f[0], altPlato(p.nombre, s.titulo), '(min-width: 900px) 300px, 40vw')}</div>
+          <figcaption class="carta-sec__pie"><span data-pie-nombre>${esc(p.nombre)}</span> <span class="carta-sec__pie-precio" data-pie-precio>${euros(p.precio)}</span></figcaption>
+        </figure>`;
 }
 
 function cartaCompleta() {
   return carta.secciones.map((s) => {
-    const f = FOTO_SECCION[s.id];
+    const { n, desde } = resumen(s);
+    const datos = desde === null ? `${n} opciones en la pizarra` : `${n} en la carta · desde ${euros(desde)}`;
     const listas = (s.grupos || [{ platos: s.platos }]).map((g) => `${g.titulo ? `<h3 class="carta-grupo">${esc(g.titulo)}</h3>` : ''}
         <ul class="carta-lista">
-          ${g.platos.map(filaPlato).join('\n          ')}
+          ${g.platos.map((p) => filaPlato(p, s)).join('\n          ')}
         </ul>`).join('\n        ');
-    return `<section class="carta-sec" id="${s.id}" aria-labelledby="t-${s.id}">
+    return `<section class="carta-sec carta-sec--${TONO[s.id] || 'leche'}" id="${s.id}" aria-labelledby="t-${s.id}">
+      <div class="carta-sec__in">
       <header class="carta-sec__cab">
-        ${f ? `<div class="carta-sec__foto">${foto(f[0], f[1], '(min-width: 900px) 220px, 34vw')}</div>` : ''}
-        <div>
-          <h2 class="carta-sec__titulo" id="t-${s.id}">${esc(s.titulo)}</h2>
+        <div class="carta-sec__titulos">
+          <h2 class="carta-sec__titulo" id="t-${s.id}">${esc(s.titulo)} <span class="carta-sec__cuenta" aria-hidden="true">${n}</span></h2>
+          <p class="carta-sec__datos">${datos}</p>
           ${s.nota ? `<p class="carta-sec__nota">${esc(s.nota)}</p>` : ''}
           ${AVISOS[s.id] ? `<p class="pegatina pegatina--linea">${AVISOS[s.id]}</p>` : ''}
         </div>
+        ${cabeceraPlato(s)}
       </header>
       <div class="carta-sec__cuerpo">
         ${listas}
+      </div>
       </div>
     </section>`;
   }).join('\n\n    ');
@@ -111,6 +178,22 @@ function cartaCompleta() {
 
 function navCarta() {
   return carta.secciones.map((s) => `<li><a href="#${s.id}">${esc(s.titulo)}</a></li>`).join('\n          ');
+}
+
+// «La mesa»: índice visual de la carta, un plato por sección
+function mesa() {
+  return carta.secciones.map((s, i) => {
+    const { n, desde } = resumen(s);
+    const f = FOTO_SECCION[s.id];
+    const plato = f
+      ? `<span class="mesa__plato">${foto(f[0], '', '(min-width: 900px) 170px, 22vw', i < 5 ? 'eager' : '')}</span>`
+      : `<span class="mesa__plato mesa__plato--letras"><span>${PLATO_DESAYUNO}</span></span>`;
+    return `<li style="--i:${i}"><a class="mesa__enlace" href="#${s.id}">
+            ${plato}
+            <span class="mesa__nombre">${esc(s.titulo)}</span>
+            <span class="mesa__dato">${desde === null ? 'Por la mañana' : `${n} · desde ${euros(desde)}`}</span>
+          </a></li>`;
+  }).join('\n          ');
 }
 
 function indiceBocadillos() {
@@ -163,6 +246,7 @@ function platosHero() {
 }
 
 const bloques = {
+  mesa,
   'platos-hero': platosHero,
   carta: cartaCompleta,
   'nav-carta': navCarta,

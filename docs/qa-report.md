@@ -99,3 +99,38 @@ Corregido durante la revisión:
 - El navegador de pruebas iba limitado a ~4 fotogramas por segundo (ventana en segundo plano), así que la **fluidez** del movimiento no se ha podido juzgar aquí: conviene verlo en un navegador normal y en un móvil real.
 - La cinta y el giro de los platos con el scroll usan `animation-timeline`, soportado en Chrome/Edge y Safari recientes; en Firefox se quedan quietos (sin fallo).
 - La transición entre páginas (View Transitions entre documentos) solo funciona en Chrome/Edge/Safari recientes; en el resto la navegación es normal.
+
+---
+
+## 8. Tercera revisión: la carta (11/10/2026)
+
+### Defectos de partida corregidos
+- «HAMBURGUE·SAS» y «PLATOS COMBINADO·S» partidos a mitad de palabra en escritorio (regla `overflow-wrap: anywhere` puesta para el móvil) → tamaño de título ajustado al ancho de la columna, sin cortes de palabra.
+- Nueve secciones idénticas → tonos por sección, cabeceras con datos y fotos reales.
+
+### Defectos encontrados al construir y corregidos
+- 2 px de scroll horizontal en móvil: los platos aún sin revelar están girados y su caja sobresalía → `overflow-x: clip` en cada sección (no rompe el `sticky`).
+- «HAMBURGUESAS» rozaba 2 px fuera de su columna en «La mesa» a 320 px → letra menor por debajo de 360 px.
+- Texto repetido en desayunos («Desde que abrimos por la mañana» dos veces) → «18 opciones en la pizarra».
+- «Del café de las 6:00» solo es cierto de lunes a viernes → «Del café de primera hora».
+- Filete entre secciones que sobresalía del margen del contenido → alineado con el contenido.
+- El servidor local se caía si llegaba una petición durante un build → arreglado (solo afecta al desarrollo).
+
+### Pruebas
+| Prueba | Resultado |
+|---|---|
+| Build | ✅ las 22 fotos de plato y las 8 de sección corresponden a platos reales de `carta.json` |
+| «La mesa» → sección | ✅ clic en Pizzas: salta a `#pizzas`, título visible bajo la barra fija, «Pizzas» activa |
+| Plato que cambia al pasar el ratón | ✅ «Calamar a la romana»: foto, `alt` y pie («Calamar a la romana · 6,90 €») cambian; la fila queda marcada |
+| Movimiento reducido | ✅ 0 animaciones, 0 elementos ocultos; el cambio de plato con el ratón sigue funcionando, sin giro |
+| Revelados | ✅ todos revelados tras un recorrido rápido (móvil y escritorio) |
+| Entrada de «La mesa» (fotograma congelado a 620 ms) | ✅ los platos caen en ola de izquierda a derecha |
+| 320 / 390 / 1440 px | ✅ sin scroll horizontal |
+| `html-validate`, `check.mjs` | ✅ 0 errores |
+| axe-core 4.10.2 | ✅ 0 infracciones con todos los tonos de sección |
+| Consola | ✅ 0 errores |
+| Peso de la carta en móvil | 396 KB en 20 peticiones (las miniaturas de la lista se cargan al llegar a ellas) |
+
+### Limitaciones
+- El cambio de plato al pasar el ratón solo existe con ratón; en móvil las miniaturas ya enseñan la foto.
+- Hay 22 platos con foto real de los 82 de la carta (sin contar los desayunos); el resto no lleva foto. Una sesión de fotos propia completaría la carta.

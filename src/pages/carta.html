@@ -10,12 +10,20 @@
 <main id="contenido">
   <section class="carta-hero" aria-labelledby="carta-titulo">
     <div class="carta-hero__in">
-      <h1 class="carta-hero__titulo" id="carta-titulo"><span class="hero__kicker">Bar Restaurante GULA · Dénia</span> La carta</h1>
+      <div class="carta-hero__cab">
+        <h1 class="carta-hero__titulo" id="carta-titulo"><span class="hero__kicker">Bar Restaurante GULA · Dénia</span> La carta</h1>
+        <p class="carta-hero__intro">Del café de primera hora a la pizza de la noche. Elige plato y te llevamos a su sección.</p>
+      </div>
+      <nav class="mesa" aria-label="Secciones de la carta, con foto">
+        <ul>
+          {{bloque:mesa}}
+        </ul>
+      </nav>
       <ul class="carta-hero__avisos">
-        <li><strong>Pizzas y hamburguesas</strong> llevan una bebida de 33&nbsp;cl incluida (y las hamburguesas, patatas).</li>
-        <li><strong>A mediodía hay menú del día.</strong> Cambia: llama al <a href="tel:{{telE164}}">{{tel}}</a> y te lo contamos.</li>
+        <li><strong>Bebida de 33&nbsp;cl incluida</strong> en todas las pizzas y hamburguesas (y las hamburguesas, con patatas).</li>
+        <li><strong>A mediodía, menú del día.</strong> Cambia: llama al <a href="tel:{{telE164}}">{{tel}}</a> y te lo contamos.</li>
         <li><strong>Alérgenos:</strong> pregúntanos y te decimos qué lleva cada plato.</li>
-        <li>Precios en el local. En Glovo y Just Eat los marca cada plataforma.</li>
+        <li><strong>Precios del local.</strong> En Glovo y Just Eat los marca cada plataforma.</li>
       </ul>
     </div>
   </section>
@@ -30,11 +38,15 @@
     {{bloque:carta}}
   </div>
 
-  <section class="carta-fin" aria-label="Pedir o reservar">
-    <p class="titulo">¿Ya sabes lo que quieres?</p>
-    <div class="hero__acciones">
-      <a class="boton boton--tinta boton--grande" href="tel:{{telE164}}">Llamar al {{tel}}</a>
-      <a class="boton boton--borde boton--grande" href="./#donde">Cómo llegar</a>
+  <section class="carta-fin" aria-labelledby="fin-titulo">
+    <div class="carta-fin__in">
+      <h2 class="titulo titulo--claro" id="fin-titulo">¿Ya sabes lo que quieres?</h2>
+      <p>Para reservar mesa, encargar para recoger o preguntar el menú del día:</p>
+      <a class="tel-gigante" href="tel:{{telE164}}"><span>Llámanos</span> {{tel}}</a>
+      <div class="hero__acciones">
+        <a class="boton boton--claro boton--grande" href="./#donde">Cómo llegar</a>
+        <a class="boton boton--claro boton--grande" href="{{glovo}}" rel="noopener" target="_blank">Pedir en Glovo <span class="sr">(se abre en otra pestaña)</span></a>
+      </div>
     </div>
   </section>
 </main>
