@@ -28,6 +28,11 @@
 
   --t-display: clamp(3.2rem, 11.5vw, 10.5rem);
   --t-titulo: clamp(2.3rem, 6.4vw, 5.4rem);
+
+  /* Curvas de movimiento */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-back: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -81,15 +86,15 @@ small { font-size: inherit; }
   border: 2px solid var(--tinta);
   font-weight: 700; font-stretch: 85%; font-size: 1.05rem; line-height: 1.1;
   text-decoration: none; text-align: center;
-  transition: transform .15s ease, background-color .15s ease, color .15s ease;
+  transition: transform 160ms var(--ease-out), background-color 160ms ease, color 160ms ease;
 }
-.boton:active { transform: translateY(1px); }
+.boton:active { transform: scale(.97); }
 .boton--tinta { background: var(--tinta); color: var(--leche); }
-.boton--tinta:hover { background: var(--yema); color: var(--tinta); }
+@media (hover: hover) and (pointer: fine) { .boton--tinta:hover { background: var(--yema); color: var(--tinta); } }
 .boton--claro { border-color: var(--leche); color: var(--leche); }
-.boton--claro:hover { background: var(--leche); color: var(--tinta); }
+@media (hover: hover) and (pointer: fine) { .boton--claro:hover { background: var(--leche); color: var(--tinta); } }
 .boton--borde { background: transparent; color: var(--tinta); }
-.boton--borde:hover { background: var(--tinta); color: var(--leche); }
+@media (hover: hover) and (pointer: fine) { .boton--borde:hover { background: var(--tinta); color: var(--leche); } }
 .boton--grande { min-height: 56px; padding: 14px 26px; font-size: 1.15rem; }
 
 .enlace-flecha {
@@ -98,7 +103,7 @@ small { font-size: inherit; }
   border-bottom: 3px solid currentColor;
 }
 .enlace-flecha::after { content: "→"; transition: transform .15s ease; }
-.enlace-flecha:hover::after { transform: translateX(4px); }
+@media (hover: hover) and (pointer: fine) { .enlace-flecha:hover::after { transform: translateX(4px); } }
 .enlace-flecha--claro { color: var(--leche); }
 
 /* ---------- Pegatinas ---------- */
@@ -146,7 +151,7 @@ small { font-size: inherit; }
 .cab__nav { margin-left: auto; }
 .cab__nav ul { display: flex; gap: 4px; }
 .cab__nav a { display: flex; align-items: center; min-height: 44px; padding: 0 10px; font-weight: 700; font-stretch: 85%; text-decoration: none; }
-.cab__nav a:hover { text-decoration: underline; }
+@media (hover: hover) and (pointer: fine) { .cab__nav a:hover { text-decoration: underline; } }
 .cab__solo-ancho { display: none; }
 .cab__llamar { min-height: 44px; padding: 8px 14px; }
 .cab__tel { display: none; }
@@ -155,6 +160,13 @@ small { font-size: inherit; }
   .estado { font-size: .85rem; }
   .estado__detalle { display: none; }
   .cab__nav a { padding: 0 6px; }
+}
+@media (max-width: 359px) {
+  .cab__in { gap: 8px; }
+  .marca { width: 64px; }
+  .estado [data-estado-texto] { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .cab__nav a { padding: 0 4px; }
+  .cab__llamar { padding: 8px 10px; }
 }
 @media (min-width: 760px) {
   .marca { width: 100px; }
@@ -198,9 +210,6 @@ small { font-size: inherit; }
 .anillo text {
   fill: var(--agua); font-family: "Bricolage", sans-serif;
   font-size: 17px; font-weight: 700; font-stretch: 85%; letter-spacing: .14em; text-transform: uppercase;
-}
-@media (prefers-reduced-motion: no-preference) {
-  .anillo { animation: girar 60s linear infinite; }
 }
 @keyframes girar { to { transform: rotate(360deg); } }
 
@@ -277,8 +286,9 @@ small { font-size: inherit; }
   background: transparent; border: 0; color: var(--marea);
   font: inherit; font-stretch: 75%; font-weight: 800; text-transform: uppercase;
   font-size: clamp(1.6rem, 4.6vw, 3.3rem); line-height: 1; padding: 8px 10px 6px;
+  transition: background-color 150ms ease, color 150ms ease;
 }
-.antojos__tabs button:hover { color: var(--tinta); }
+@media (hover: hover) and (pointer: fine) { .antojos__tabs button:hover { color: var(--tinta); } }
 .antojos__tabs button[aria-selected="true"] { background: var(--tinta); color: var(--leche); }
 
 @media (min-width: 900px) {
@@ -300,12 +310,7 @@ small { font-size: inherit; }
   .antojo__titulo { grid-column: 1 / -1; }
   .antojo__foto { width: 100%; max-width: 500px; }
 }
-@media (prefers-reduced-motion: no-preference) {
-  .js-tabs .antojo:not([hidden]) .antojo__foto img { animation: aparecer .45s cubic-bezier(.2, .8, .2, 1); }
-  .js-tabs .antojo:not([hidden]) .antojo__carta { animation: subir .45s cubic-bezier(.2, .8, .2, 1); }
-}
-@keyframes aparecer { from { transform: scale(.92) rotate(-6deg); opacity: 0; } }
-@keyframes subir { from { transform: translateY(12px); opacity: 0; } }
+/* Cambio de pestaña: el plato entra girando y la lista sube (ver «Movimiento») */
 
 .lista-precios { border-top: var(--filete) solid var(--tinta); }
 .lista-precios li {
@@ -347,7 +352,7 @@ small { font-size: inherit; }
   .bocata__n { grid-row: auto; }
   .bocata__precio { grid-column: auto; grid-row: auto; }
   .bocata__desc { grid-column: auto; font-size: .95rem; line-height: 1.35; }
-  .bocata:hover .bocata__nombre { color: var(--yema); }
+  @media (hover: hover) and (pointer: fine) { .bocata:hover .bocata__nombre { color: var(--yema); } }
 }
 
 /* =========================================================
@@ -364,7 +369,7 @@ small { font-size: inherit; }
 @media (min-width: 900px) { .cocina__rejilla { grid-template-columns: repeat(4, 1fr); } }
 .cocina__rejilla figure { position: relative; overflow: hidden; aspect-ratio: 1; }
 .cocina__rejilla img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s cubic-bezier(.2, .8, .2, 1); }
-.cocina__rejilla li:hover img { transform: scale(1.05); }
+@media (hover: hover) and (pointer: fine) { .cocina__rejilla li:hover img { transform: scale(1.05); } }
 .cocina__rejilla figcaption {
   position: absolute; left: 0; bottom: 0; right: auto; max-width: 100%;
   background: var(--tinta); color: var(--leche);
@@ -391,7 +396,7 @@ small { font-size: inherit; }
   border-top: var(--filete) solid var(--leche); padding-top: 14px;
 }
 .tel-gigante span { display: block; font-size: .32em; font-stretch: 85%; letter-spacing: .04em; text-transform: uppercase; margin-bottom: 6px; color: var(--yema); }
-.tel-gigante:hover { color: var(--yema); }
+@media (hover: hover) and (pointer: fine) { .tel-gigante:hover { color: var(--yema); } }
 .fiestas { border-top: var(--filete) solid var(--tinta); }
 .fiestas li { display: grid; gap: 2px; padding: 14px 0; border-bottom: 2px solid var(--tinta); }
 .fiestas__cuando { font-stretch: 75%; font-weight: 800; text-transform: uppercase; font-size: 1.6rem; line-height: 1; }
@@ -440,7 +445,7 @@ small { font-size: inherit; }
   display: inline-flex; align-items: center; min-height: 44px; padding: 6px 16px;
   background: var(--marea); color: var(--leche); font-weight: 700; font-stretch: 85%; text-decoration: none;
 }
-.domicilio__apps a:hover { background: var(--tinta); }
+@media (hover: hover) and (pointer: fine) { .domicilio__apps a:hover { background: var(--tinta); } }
 .domicilio__nota { font-size: .92rem; }
 .donde__sub { font-stretch: 75%; font-weight: 800; text-transform: uppercase; font-size: 2rem; line-height: 1; margin-bottom: 12px; }
 
@@ -457,7 +462,7 @@ small { font-size: inherit; }
 }
 .mapa__dir { font-stretch: 80%; font-weight: 800; font-size: 1.6rem; line-height: 1.05; text-transform: uppercase; }
 .mapa .boton--borde { border-color: var(--leche); color: var(--leche); }
-.mapa .boton--borde:hover { background: var(--leche); color: var(--tinta); }
+@media (hover: hover) and (pointer: fine) { .mapa .boton--borde:hover { background: var(--leche); color: var(--tinta); } }
 .mapa iframe { width: 100%; height: 100%; border: 0; display: block; }
 .mapa.con-mapa { padding: 0; display: block; }
 @media (min-width: 900px) {
@@ -498,7 +503,9 @@ small { font-size: inherit; }
 .carta-nav ul { position: relative; max-width: var(--ancho); margin: 0 auto; display: flex; overflow-x: auto; scrollbar-width: none; padding: 0 var(--margen); }
 .carta-nav ul::-webkit-scrollbar { display: none; }
 .carta-nav a { display: flex; align-items: center; min-height: 48px; padding: 0 12px; color: var(--leche); font-weight: 700; font-stretch: 85%; text-decoration: none; white-space: nowrap; }
-.carta-nav a:hover, .carta-nav a[aria-current="true"] { background: var(--yema); color: var(--tinta); }
+.carta-nav a { transition: background-color 150ms ease, color 150ms ease; }
+.carta-nav a[aria-current="true"] { background: var(--yema); color: var(--tinta); }
+@media (hover: hover) and (pointer: fine) { .carta-nav a:hover { background: var(--yema); color: var(--tinta); } }
 
 html:has(.pag-carta) { scroll-padding-top: calc(var(--cab-alto) + 64px); }
 
@@ -544,3 +551,133 @@ html:has(.pag-carta) { scroll-padding-top: calc(var(--cab-alto) + 64px); }
   body { background: #fff; font-size: 11pt; }
 }
 .nw { white-space: nowrap; }
+
+/* =========================================================
+   Cinta (entre antojos y bocadillos)
+   ========================================================= */
+.cinta {
+  background: var(--yema); color: var(--tinta); overflow: hidden;
+  border-block: var(--filete) solid var(--tinta);
+  padding: clamp(12px, 2vw, 22px) 0; display: grid; gap: 4px;
+}
+.cinta__fila {
+  display: flex; width: max-content; white-space: nowrap;
+  font-stretch: 75%; font-weight: 800; text-transform: uppercase;
+  font-size: clamp(2.6rem, 8vw, 7rem); line-height: .95;
+}
+.cinta__fila span::after {
+  content: ""; display: inline-block; width: .3em; height: .3em; border-radius: 50%;
+  background: var(--marea); margin: 0 .42em; vertical-align: .2em;
+}
+.cinta__fila--inversa { color: var(--marea); transform: translateX(-30%); }
+.cinta__fila--inversa span::after { background: var(--tinta); }
+
+/* =========================================================
+   Plato giratorio: pie y controles
+   ========================================================= */
+.giro { position: absolute; left: 0; bottom: 3%; z-index: 3; display: flex; align-items: center; gap: 6px; }
+.giro[hidden] { display: none; }
+@media (max-width: 899px) {
+  .giro { position: relative; left: auto; bottom: auto; justify-content: center; margin-top: 6px; }
+  .pegatina--hero { bottom: auto; top: calc(min(86vw, 560px) * .64); }
+}
+.giro__pie {
+  background: var(--tinta); color: var(--leche);
+  padding: 8px 12px; font-weight: 700; font-stretch: 80%; font-size: clamp(.9rem, 2.6vw, 1.05rem); line-height: 1.1;
+}
+.giro__precio { color: var(--yema); white-space: nowrap; margin-left: 4px; }
+.giro__btn {
+  width: 44px; height: 44px; border-radius: 50%; flex: none; cursor: pointer;
+  display: grid; place-items: center; padding: 0;
+  background: var(--leche); color: var(--tinta); border: 2px solid var(--tinta);
+  transition: transform 160ms var(--ease-out), background-color 160ms ease;
+}
+.giro__btn:active { transform: scale(.94); }
+@media (hover: hover) and (pointer: fine) { .giro__btn:hover { background: var(--yema); } }
+.giro__btn svg { width: 18px; height: 18px; fill: currentColor; }
+.giro__btn .i-play { display: none; }
+.giro__btn[aria-pressed="true"] .i-pausa { display: none; }
+.giro__btn[aria-pressed="true"] .i-play { display: inline; }
+.giro__btn[hidden] { display: none; }
+
+/* =========================================================
+   Movimiento
+   Solo con html.mo (JS activo y sin «reducir movimiento»):
+   sin JS o con movimiento reducido, todo se ve quieto y completo.
+   ========================================================= */
+
+/* Anillo del sello: gira despacio, como un plato en la mesa */
+.mo .anillo { animation: girar 60s linear infinite; }
+@keyframes girar { to { transform: rotate(360deg); } }
+
+/* Primera pantalla: entrada única al cargar */
+.mo .hero__kicker,
+.mo .hero__entrada,
+.mo .hero__acciones,
+.mo .hero__estado { animation: entra-sube 600ms var(--ease-out) both; }
+.mo .hero__kicker { animation-delay: 60ms; }
+.mo .hero__entrada { animation-delay: 520ms; }
+.mo .hero__acciones { animation-delay: 600ms; }
+.mo .hero__estado { animation-delay: 680ms; }
+.mo .hero__l1, .mo .hero__l2 { animation: entra-linea 800ms var(--ease-in-out) both; }
+.mo .hero__l1 { animation-delay: 120ms; }
+.mo .hero__l2 { animation-delay: 240ms; }
+.mo .plato-circ--hero { animation: entra-plato 1100ms var(--ease-out) 150ms both; }
+.mo .hero .anillo text { animation: entra-fade 900ms var(--ease-out) 550ms both; }
+.mo .pegatina--hero { animation: entra-pegatina 520ms var(--ease-back) 950ms both; }
+.mo .giro { animation: entra-sube 500ms var(--ease-out) 1100ms both; }
+
+@keyframes entra-sube { from { opacity: 0; transform: translateY(14px); } }
+@keyframes entra-fade { from { opacity: 0; } }
+@keyframes entra-linea {
+  from { clip-path: polygon(0 100%, 400% 100%, 400% 100%, 0 100%); transform: translateY(22%); }
+  to { clip-path: polygon(0 -30%, 400% -30%, 400% 130%, 0 130%); transform: none; }
+}
+@keyframes entra-plato { from { opacity: 0; transform: rotate(-120deg) scale(.88); } }
+@keyframes entra-pegatina { from { opacity: 0; transform: rotate(40deg) scale(1.4); } }
+
+/* Cambio de pestaña: el plato entra girando y la lista sube */
+
+.mo .js-tabs .antojo:not([hidden]) .antojo__foto img { animation: entra-giro 520ms var(--ease-out); }
+.mo .js-tabs .antojo:not([hidden]) .antojo__carta { animation: entra-sube 420ms var(--ease-out) 60ms both; }
+.mo .js-tabs .antojo:not([hidden]) .pegatina--esquina { animation: entra-pegatina 420ms var(--ease-back) 260ms both; }
+@keyframes entra-giro { from { opacity: 0; transform: rotate(-40deg) scale(.94); } }
+
+/* Revelados al hacer scroll (una sola vez) */
+.mo .rv {
+  transition:
+    opacity 600ms var(--ease-out),
+    transform 600ms var(--ease-out),
+    clip-path 800ms var(--ease-in-out);
+  transition-delay: calc(var(--i, 0) * 60ms);
+}
+.mo .rv-sube:not(.visto) { opacity: 0; transform: translateY(16px); }
+.mo .rv-linea { clip-path: polygon(0 -25%, 100% -25%, 100% 125%, 0 125%); }
+.mo .rv-linea:not(.visto) { clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%); transform: translateY(18%); }
+.mo .rv-plato:not(.visto) { opacity: 0; transform: rotate(-35deg) scale(.92); }
+.mo .rv-cortina { clip-path: inset(0 0 0 0); }
+.mo .rv-cortina:not(.visto) { clip-path: inset(100% 0 0 0); }
+.mo .rv.rv-cortina img { transition: transform 1100ms var(--ease-out); }
+.mo .rv-cortina:not(.visto) img { transform: scale(1.18); }
+
+/* Ligado al scroll, donde el navegador lo soporta */
+@supports (animation-timeline: view()) {
+  .mo .cinta__fila { animation: cinta-izq linear both; animation-timeline: view(); animation-range: cover; }
+  .mo .cinta__fila--inversa { animation-name: cinta-der; }
+  .mo .bocatas__fotos .plato-circ { animation: gira-scroll linear both; animation-timeline: scroll(root block); }
+  .mo .bocatas__fotos .plato-circ + .plato-circ { animation-direction: reverse; }
+}
+@keyframes cinta-izq { from { transform: translateX(0); } to { transform: translateX(-18%); } }
+@keyframes cinta-der { from { transform: translateX(-30%); } to { transform: translateX(-12%); } }
+@keyframes gira-scroll { from { transform: rotate(0deg); } to { transform: rotate(540deg); } }
+
+/* Transición entre portada y carta (navegadores que la soportan) */
+@view-transition { navigation: auto; }
+.cab { view-transition-name: cabecera; }
+::view-transition-old(root) { animation: 180ms var(--ease-out) both vt-sale; }
+::view-transition-new(root) { animation: 320ms var(--ease-out) both vt-entra; }
+@keyframes vt-sale { to { opacity: 0; } }
+@keyframes vt-entra { from { opacity: 0; transform: translateY(14px); } }
+@media (prefers-reduced-motion: reduce) {
+  @view-transition { navigation: none; }
+}

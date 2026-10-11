@@ -94,6 +94,30 @@ Alternancia leche / marea / tinta para marcar el ritmo sin repetir la misma comp
 
 Nada de cursor personalizado, parallax, WebGL ni scroll secuestrado.
 
+## Sistema de movimiento (segunda revisión, 11/10/2026)
+
+Tras revisar la web contra el CLAUDE.md, la crítica fue justa: salvo el anillo, era estática, y la portada solo enseñaba una hamburguesa cuando Gula va «del café al calzone». El movimiento se añade con una regla: **cada efecto tiene una función y sale del concepto** (el plato redondo, el sello que gira, la cinta de los bocadillos con nombre).
+
+| Movimiento | Función | Cómo |
+|---|---|---|
+| Entrada de la portada: el titular sube desde su máscara, el plato llega girando, la pegatina «se pega» con rebote | primera impresión, una sola vez | animaciones CSS escalonadas (60–950 ms), curva `--ease-out` fuerte; rebote solo en la pegatina |
+| **El plato gira**: cada 4,5 s da una vuelta y llega otro plato (hamburguesa → pizza → bocadillos → huevos rotos), con su nombre y precio | explicar la variedad real del bar en la primera pantalla | WAAPI: rotación de 360° en 950 ms con desenfoque de 3 px a mitad de giro para ocultar el cambio de foto; la foto siguiente se precarga y se descodifica antes de girar |
+| Botones de pausa y siguiente en el plato | WCAG 2.2.2 (contenido que se mueve solo) | también se para con el ratón encima, fuera de pantalla o con la pestaña oculta |
+| Cambio de pestaña en «¿Qué te pide el cuerpo?» | indicar el cambio de estado | el plato entra girando 40°, la lista sube, la pegatina se pega (≤ 520 ms) |
+| Revelados al hacer scroll: títulos desde máscara, filas que suben escalonadas (60 ms), fotos de la galería con cortina | ritmo de lectura en una página larga | transiciones de `clip-path`/`transform`/`opacity`, una sola vez |
+| Cinta amarilla con «Pizzas de 33 cm · Bebida incluida…» y los nombres de los bocadillos | energía de barra, eco de las cintas de Sixes | ligada al scroll con `animation-timeline: view()`; sin soporte, queda quieta |
+| Los platos del índice de bocadillos giran con el scroll | eco del plato y del sello | `animation-timeline: scroll()` |
+| Contador 0,0 → 4,5 y estrella que entra girando | dar peso a la valoración | una vez; si la sección ya está a la vista, se muestra la nota sin animar |
+| Pulsación de botones (`scale(.97)`, 160 ms) | confirmar el toque | CSS |
+| Transición suave entre portada y carta | continuidad, la cabecera no «salta» | View Transitions entre documentos |
+
+**Garantías:**
+- Todo depende de la clase `html.mo`, que solo se pone si hay JavaScript y el sistema **no** pide reducir movimiento. Sin JS o con movimiento reducido, todo se ve quieto y completo; el plato solo cambia si se pulsa «siguiente».
+- Los revelados no usan `IntersectionObserver` (entrega tarde con la página ocupada y no ve los elementos recortados con `clip-path`): en cada fotograma de scroll se revela todo lo que ya esté por encima del borde inferior, incluido lo que se haya pasado. Ningún contenido puede quedarse oculto.
+- Lo que ya está a la vista al cargar no se anima (sería un parpadeo, no una entrada).
+- Solo se animan `transform`, `opacity` y `clip-path`; los `:hover` con movimiento solo se aplican con ratón.
+- Sin librerías: unos 16 KB de JS en total.
+
 ## Riesgos que se evitan
 
 - Convertir el «pecado» en chiste continuo: el humor se queda en dos o tres frases.

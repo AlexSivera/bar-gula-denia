@@ -69,4 +69,13 @@ De estas referencias se toman **cinco principios**, no composiciones:
 
 Y una regla de uso de Sixes: la acción principal, a la vista desde el primer segundo.
 
-Lo que se ha descartado a propósito: mundos 3D, scroll secuestrado, cursores personalizados, festones decorativos y carruseles.
+### Movimiento (segunda revisión)
+
+Al volver sobre las referencias para el movimiento:
+- **Sixes**: cintas de texto en mayúsculas entre secciones → la cinta amarilla de Gula, pero **ligada al scroll** y no en bucle automático, para que acompañe la lectura en lugar de competir con ella.
+- **Mâm Cơm**: la bandeja se compone plato a plato → el plato de la portada que gira y cambia de plato para enseñar la variedad.
+- **Délice**: foto que entra con forma propia → entradas de foto con giro (el círculo es el plato).
+- **Grids**: titulares que aparecen como bloques recortados → títulos que suben desde su máscara.
+- **Meatopia** sigue descartada como modelo: el 3D y el scroll secuestrado frenan al visitante.
+
+Lo que se ha descartado a propósito: mundos 3D, scroll secuestrado, cursores personalizados, festones decorativos y carruseles de tarjetas. (El plato giratorio de la portada no es un carrusel de contenido: es una sola foto que cambia, con pausa, y sale del concepto del plato redondo.)

@@ -147,7 +147,23 @@ function jsonLd() {
   }, null, 2);
 }
 
+// Platos que van pasando por el plato giratorio de la portada
+function platosHero() {
+  const lista = [
+    { foto: 'burger-pulled', nombre: 'Hamburguesa Pulled pork', precio: precio('hamburguesas/Pulled pork'), peg: ['Bebida', '33 cl', 'incluida'], alt: 'Hamburguesa Pulled pork de Gula, con cerdo mechado a fuego lento y salsa barbacoa' },
+    { foto: 'pizza-san-remo', nombre: 'Pizza San Remo', precio: precio('pizzas/San Remo'), peg: ['Bebida', '33 cl', 'incluida'], alt: 'Pizza San Remo de Gula en su caja, con jamón serrano, rúcula y tomate cherry' },
+    { foto: 'bocadillo-pollo', nombre: 'Bocadillos', precio: 'desde ' + precio('bocadillos/Francesa'), peg: ['Hay', '15', 'con nombre'], alt: 'Bocadillo de Gula con bacón y huevo frito sobre tabla de madera' },
+    { foto: 'huevos-rotos', nombre: 'Huevos rotos con jamón', precio: precio('entrantes/Huevos rotos con jamón serrano'), peg: ['Para', 'picar', 'en terraza'], alt: 'Huevos rotos con jamón serrano y pimiento frito en cazuelita negra' },
+  ];
+  return esc(JSON.stringify(lista.map((p) => {
+    const anchos = [400, 720, 1080].filter((w) => fotosDisponibles.has(`${p.foto}-${w}.webp`));
+    if (!anchos.length) errores.push(`Foto inexistente: ${p.foto}`);
+    return { ...p, src: `assets/img/fotos/${p.foto}-720.webp`, srcset: anchos.map((w) => `assets/img/fotos/${p.foto}-${w}.webp ${w}w`).join(', ') };
+  })));
+}
+
 const bloques = {
+  'platos-hero': platosHero,
   carta: cartaCompleta,
   'nav-carta': navCarta,
   bocadillos: indiceBocadillos,

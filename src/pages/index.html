@@ -28,15 +28,24 @@
         <p class="hero__estado" data-estado-largo>Abrimos de 6:00 a 23:30 · los miércoles, cerrado.</p>
       </div>
 
-      <div class="hero__plato">
-        <figure class="plato-circ plato-circ--hero">
+      <div class="hero__plato" data-giratorio data-platos="{{bloque:platos-hero}}">
+        <figure class="plato-circ plato-circ--hero" data-plato>
           {{foto:burger-pulled|Hamburguesa Pulled pork de Gula, con cerdo mechado a fuego lento y salsa barbacoa|(min-width: 900px) 44vw, 86vw|eager}}
         </figure>
         <svg class="anillo" viewBox="0 0 400 400" aria-hidden="true" focusable="false">
           <defs><path id="anillo-ruta" d="M200,200 m-182,0 a182,182 0 1,1 364,0 a182,182 0 1,1 -364,0"/></defs>
           <text><textPath href="#anillo-ruta" textLength="1140">Pizzas de 33 cm · Hamburguesas · Bocadillos con nombre · Menú del día ·</textPath></text>
         </svg>
-        <p class="pegatina pegatina--hero"><span>Bebida</span> <span class="pegatina__grande">33 cl</span> <span>incluida</span></p>
+        <p class="pegatina pegatina--hero" data-pegatina><span>Bebida</span> <span class="pegatina__grande">33 cl</span> <span>incluida</span></p>
+        <div class="giro" data-giro-controles hidden>
+          <p class="giro__pie" data-giro-pie><span data-giro-nombre>Hamburguesa Pulled pork</span> <span class="giro__precio" data-giro-precio>{{p:hamburguesas/Pulled pork}}</span></p>
+          <button class="giro__btn" type="button" data-giro-pausa aria-pressed="false" aria-label="Pausar el cambio de platos">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path class="i-pausa" d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/><path class="i-play" d="M8 5l11 7-11 7z"/></svg>
+          </button>
+          <button class="giro__btn" type="button" data-giro-siguiente aria-label="Ver otro plato">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 12a8 8 0 0 1 13.7-5.6L20 4v6h-6l2.3-2.3A5.5 5.5 0 1 0 17.5 12H20a8 8 0 0 1-16 0z"/></svg>
+          </button>
+        </div>
       </div>
     </div>
   </section>
@@ -177,6 +186,12 @@
     </div>
   </section>
 
+  <!-- Cinta ligada al scroll (decorativa: repite datos que ya están en la página) -->
+  <div class="cinta" aria-hidden="true">
+    <p class="cinta__fila"><span>Pizzas de 33 cm</span><span>Bebida incluida</span><span>15 bocadillos con nombre</span><span>Menú del día</span><span>Desde las 6:00</span><span>Pizzas de 33 cm</span><span>Bebida incluida</span><span>15 bocadillos con nombre</span><span>Menú del día</span><span>Desde las 6:00</span></p>
+    <p class="cinta__fila cinta__fila--inversa"><span>Republicano</span><span>Cofrade</span><span>Salvavidas</span><span>Almusafes</span><span>Chulo</span><span>Brascada</span><span>Serranito</span><span>Republicano</span><span>Cofrade</span><span>Salvavidas</span><span>Almusafes</span><span>Chulo</span></p>
+  </div>
+
   <!-- 3 · Bocadillos con nombre -->
   <section class="bocatas" id="bocadillos" aria-labelledby="bocatas-titulo">
     <div class="bocatas__in">
@@ -241,7 +256,7 @@
     <div class="opinan__in">
       <div class="opinan__nota">
         <h2 class="sr" id="opinan-titulo">Lo que dice la gente en Google</h2>
-        <p class="opinan__cifra"><span>{{nota}}</span><span class="opinan__estrella" aria-hidden="true">★</span></p>
+        <p class="opinan__cifra"><span class="sr">{{nota}} sobre 5</span><span data-cuenta aria-hidden="true">{{nota}}</span><span class="opinan__estrella" aria-hidden="true">★</span></p>
         <p class="opinan__pie">en Google, con {{numResenas}} reseñas<br><span>(octubre de 2026)</span></p>
       </div>
       <ul class="opinan__citas">
