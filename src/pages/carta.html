@@ -1,0 +1,45 @@
+<!-- meta {"title": "Carta y precios · Bar Restaurante GULA, Dénia", "description": "La carta completa de Gula con precios: entrantes, ensaladas, pastas, 19 pizzas de 33 cm y 6 hamburguesas con bebida incluida, 15 bocadillos, platos combinados y menú infantil. Av. de Ramón Ortega, 7, Dénia.", "path": "/carta.html"} -->
+<!doctype html>
+<html lang="es">
+<head>
+{{> head}}
+</head>
+<body class="pag-carta" data-horario="{{bloque:horario-json}}">
+{{> cabecera}}
+
+<main id="contenido">
+  <section class="carta-hero" aria-labelledby="carta-titulo">
+    <div class="carta-hero__in">
+      <h1 class="carta-hero__titulo" id="carta-titulo"><span class="hero__kicker">Bar Restaurante GULA · Dénia</span> La carta</h1>
+      <ul class="carta-hero__avisos">
+        <li><strong>Pizzas y hamburguesas</strong> llevan una bebida de 33&nbsp;cl incluida (y las hamburguesas, patatas).</li>
+        <li><strong>A mediodía hay menú del día.</strong> Cambia: llama al <a href="tel:{{telE164}}">{{tel}}</a> y te lo contamos.</li>
+        <li><strong>Alérgenos:</strong> pregúntanos y te decimos qué lleva cada plato.</li>
+        <li>Precios en el local. En Glovo y Just Eat los marca cada plataforma.</li>
+      </ul>
+    </div>
+  </section>
+
+  <nav class="carta-nav" aria-label="Secciones de la carta">
+    <ul>
+          {{bloque:nav-carta}}
+    </ul>
+  </nav>
+
+  <div class="carta">
+    {{bloque:carta}}
+  </div>
+
+  <section class="carta-fin" aria-label="Pedir o reservar">
+    <p class="titulo">¿Ya sabes lo que quieres?</p>
+    <div class="hero__acciones">
+      <a class="boton boton--tinta boton--grande" href="tel:{{telE164}}">Llamar al {{tel}}</a>
+      <a class="boton boton--borde boton--grande" href="./#donde">Cómo llegar</a>
+    </div>
+  </section>
+</main>
+
+{{> pie}}
+<script src="assets/js/gula.js" defer></script>
+</body>
+</html>

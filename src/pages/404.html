@@ -1,0 +1,23 @@
+<!-- meta {"title": "Página no encontrada · Bar Restaurante GULA", "description": "Esta página no existe. Vuelve a la portada o mira la carta de Gula.", "path": "/404.html"} -->
+<!doctype html>
+<html lang="es">
+<head>
+<base href="/bar-gula-denia/">
+{{> head}}
+<meta name="robots" content="noindex">
+</head>
+<body class="pag-404" data-horario="{{bloque:horario-json}}">
+{{> cabecera}}
+<main id="contenido" class="no-encontrada">
+  <p class="no-encontrada__cifra" aria-hidden="true">404</p>
+  <h1 class="titulo">Aquí no queda nada.</h1>
+  <p>Esta página se la ha comido alguien. Lo demás sigue en su sitio.</p>
+  <div class="hero__acciones">
+    <a class="boton boton--tinta boton--grande" href="carta.html">Ver la carta</a>
+    <a class="boton boton--borde boton--grande" href="./">Ir a la portada</a>
+  </div>
+</main>
+{{> pie}}
+<script src="assets/js/gula.js" defer></script>
+</body>
+</html>

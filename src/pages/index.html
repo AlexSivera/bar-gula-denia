@@ -1,0 +1,296 @@
+<!-- meta {"title": "Bar Restaurante GULA · Bar, pizzería y almuerzos en Dénia", "description": "Bar de barrio detrás de la estación de autobuses de Dénia. Desde las 6:00: almuerzos con 15 bocadillos con nombre, menú del día y, por la noche, pizzas de 33 cm y hamburguesas con la bebida incluida. Tel. 865 83 35 27.", "path": "/"} -->
+<!doctype html>
+<html lang="es">
+<head>
+{{> head}}
+<script type="application/ld+json">
+{{bloque:jsonld}}
+</script>
+</head>
+<body class="inicio" data-horario="{{bloque:horario-json}}">
+{{> cabecera}}
+
+<main id="contenido">
+
+  <!-- 1 · Primera pantalla -->
+  <section class="hero" aria-labelledby="hero-titulo">
+    <div class="hero__in">
+      <div class="hero__texto">
+        <h1 id="hero-titulo">
+          <span class="hero__kicker">Bar, restaurante y pizzería en Dénia</span>
+          <span class="hero__titular"><span class="hero__l1">Date el</span> <span class="hero__l2">capricho.</span></span>
+        </h1>
+        <p class="hero__entrada">Bar de barrio justo detrás de la estación de autobuses. Café desde las 6:00, almuerzo de bocadillo con nombre propio, menú del día a mediodía y, por la noche, pizzas de 33&nbsp;cm y hamburguesas con la bebida incluida.</p>
+        <div class="hero__acciones">
+          <a class="boton boton--tinta boton--grande" href="tel:{{telE164}}">Llamar al {{tel}}</a>
+          <a class="boton boton--claro boton--grande" href="carta.html">Ver la carta</a>
+        </div>
+        <p class="hero__estado" data-estado-largo>Abrimos de 6:00 a 23:30 · los miércoles, cerrado.</p>
+      </div>
+
+      <div class="hero__plato">
+        <figure class="plato-circ plato-circ--hero">
+          {{foto:burger-pulled|Hamburguesa Pulled pork de Gula, con cerdo mechado a fuego lento y salsa barbacoa|(min-width: 900px) 44vw, 86vw|eager}}
+        </figure>
+        <svg class="anillo" viewBox="0 0 400 400" aria-hidden="true" focusable="false">
+          <defs><path id="anillo-ruta" d="M200,200 m-182,0 a182,182 0 1,1 364,0 a182,182 0 1,1 -364,0"/></defs>
+          <text><textPath href="#anillo-ruta" textLength="1140">Pizzas de 33 cm · Hamburguesas · Bocadillos con nombre · Menú del día ·</textPath></text>
+        </svg>
+        <p class="pegatina pegatina--hero"><span>Bebida</span> <span class="pegatina__grande">33 cl</span> <span>incluida</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Banda de datos -->
+  <section class="datos" aria-label="Datos prácticos">
+    <ul class="datos__lista">
+      <li><strong>6:00 → 23:30</strong><span>Sábado desde las 7:00, domingo desde las 8:00, martes hasta las 23:00</span></li>
+      <li><strong>Miércoles</strong><span>Cerrado por descanso</span></li>
+      <li><strong>Estación de autobuses</strong><span>Estamos justo detrás, en la Av. de Ramón Ortega, 7</span></li>
+      <li><strong>Terraza</strong><span>Y mesas dentro. Para llevar y a domicilio</span></li>
+    </ul>
+  </section>
+
+  <!-- 2 · Selector de antojos -->
+  <section class="antojos" id="antojos" aria-labelledby="antojos-titulo">
+    <div class="antojos__cab">
+      <h2 class="titulo" id="antojos-titulo">¿Qué te pide el cuerpo?</h2>
+      <p class="antojos__intro">Elige y te enseñamos lo que hay, con su precio. Aquí van unos cuantos; el resto está en la carta.</p>
+    </div>
+
+    <div class="antojos__tabs" role="tablist" aria-label="Antojos" data-tabs hidden>
+      <button type="button" role="tab" id="tab-almorzar" aria-controls="antojo-almorzar" aria-selected="true">Almorzar</button>
+      <button type="button" role="tab" id="tab-picar" aria-controls="antojo-picar" aria-selected="false" tabindex="-1">Picar</button>
+      <button type="button" role="tab" id="tab-pizza" aria-controls="antojo-pizza" aria-selected="false" tabindex="-1">Pizza</button>
+      <button type="button" role="tab" id="tab-burger" aria-controls="antojo-burger" aria-selected="false" tabindex="-1">Hamburguesa</button>
+      <button type="button" role="tab" id="tab-plato" aria-controls="antojo-plato" aria-selected="false" tabindex="-1">Un plato</button>
+      <button type="button" role="tab" id="tab-pasta" aria-controls="antojo-pasta" aria-selected="false" tabindex="-1">Pasta o ensalada</button>
+    </div>
+
+    <div class="antojo" id="antojo-almorzar" role="tabpanel" aria-labelledby="tab-almorzar">
+      <h3 class="antojo__titulo">Almorzar</h3>
+      <figure class="plato-circ antojo__foto">
+        {{foto:bocadillo-pollo|Bocadillo de Gula con pollo, bacón, queso y huevo frito, sobre tabla de madera y papel|(min-width: 900px) 34vw, 72vw}}
+        <p class="pegatina pegatina--esquina">15 bocadillos con nombre</p>
+      </figure>
+      <div class="antojo__carta">
+        <p class="antojo__lema">Abrimos a las 6:00 (sábados a las 7:00, domingos a las 8:00). Café, tostada y bocadillo como Dios manda.</p>
+        <ul class="lista-precios">
+          <li><span>Chivito <small>lomo o pollo, bacón, tomate, huevo</small></span><span>{{p:bocadillos/Chivito}}</span></li>
+          <li><span>Brascada <small>ternera, pimiento asado, cebolla caramelizada, jamón</small></span><span>{{p:bocadillos/Brascada}}</span></li>
+          <li><span>Republicano <small>longaniza, morcilla, chorizo y patatas fritas</small></span><span>{{p:bocadillos/Republicano}}</span></li>
+          <li><span>Calamar a la romana <small>con mayonesa o picaeta</small></span><span>{{p:bocadillos/Calamar a la romana}}</span></li>
+        </ul>
+        <a class="enlace-flecha" href="#bocadillos">Los 15 bocadillos</a>
+      </div>
+    </div>
+
+    <div class="antojo" id="antojo-picar" role="tabpanel" aria-labelledby="tab-picar">
+      <h3 class="antojo__titulo">Picar</h3>
+      <figure class="plato-circ antojo__foto">
+        {{foto:huevos-rotos|Huevos rotos con jamón serrano y pimiento frito en cazuelita negra sobre plato de rayas azules|(min-width: 900px) 34vw, 72vw}}
+        <p class="pegatina pegatina--esquina">20 entrantes</p>
+      </figure>
+      <div class="antojo__carta">
+        <p class="antojo__lema">Para compartir en la terraza, o para no compartir.</p>
+        <ul class="lista-precios">
+          <li><span>Huevos rotos con jamón serrano</span><span>{{p:entrantes/Huevos rotos con jamón serrano}}</span></li>
+          <li><span>Calamar a la romana</span><span>{{p:entrantes/Calamar a la romana}}</span></li>
+          <li><span>Alcachofitas crujientes con foie</span><span>{{p:entrantes/Alcachofitas crujientes con foie}}</span></li>
+          <li><span>Patatas bravas</span><span>{{p:entrantes/Patatas bravas}}</span></li>
+          <li><span>Tabla ibérica <small>ibérico mixto y quesos variados</small></span><span>{{p:entrantes/Tabla ibérica}}</span></li>
+        </ul>
+        <a class="enlace-flecha" href="carta.html#entrantes">Todos los entrantes</a>
+      </div>
+    </div>
+
+    <div class="antojo" id="antojo-pizza" role="tabpanel" aria-labelledby="tab-pizza">
+      <h3 class="antojo__titulo">Pizza</h3>
+      <figure class="plato-circ antojo__foto">
+        {{foto:pizza-san-remo|Pizza San Remo de Gula en su caja, con jamón serrano, rúcula, tomate cherry y grana padano|(min-width: 900px) 34vw, 72vw}}
+        <p class="pegatina pegatina--esquina">Bebida de 33 cl incluida</p>
+      </figure>
+      <div class="antojo__carta">
+        <p class="antojo__lema">19 pizzas de 33&nbsp;cm. Todas llevan una bebida de 33&nbsp;cl gratis.</p>
+        <ul class="lista-precios">
+          <li><span>Margarita</span><span>{{p:pizzas/Margarita}}</span></li>
+          <li><span>Pulled pork <small>cerdo mechado, bacón, cebolla</small></span><span>{{p:pizzas/Pulled pork}}</span></li>
+          <li><span>Calzone Gula <small>york, champiñones, quesos y huevo</small></span><span>{{p:pizzas/Calzone Gula}}</span></li>
+          <li><span>San Remo <small>serrano, rúcula, búfala, grana padano</small></span><span>{{p:pizzas/San Remo}}</span></li>
+        </ul>
+        <a class="enlace-flecha" href="carta.html#pizzas">Las 19 pizzas</a>
+      </div>
+    </div>
+
+    <div class="antojo" id="antojo-burger" role="tabpanel" aria-labelledby="tab-burger">
+      <h3 class="antojo__titulo">Hamburguesa</h3>
+      <figure class="plato-circ antojo__foto">
+        {{foto:burger-cabra|Cabra burger de Gula con patatas sobre papel de periódico|(min-width: 900px) 34vw, 72vw}}
+        <p class="pegatina pegatina--esquina">Patatas y bebida incluidas</p>
+      </figure>
+      <div class="antojo__carta">
+        <p class="antojo__lema">Seis hamburguesas, casi todas con 180&nbsp;g de ternera. Las patatas y una bebida de 33&nbsp;cl van incluidas.</p>
+        <ul class="lista-precios">
+          <li><span>Classic <small>cheddar, bacón, tomate, salsa rosa</small></span><span>{{p:hamburguesas/Classic}}</span></li>
+          <li><span>Pulled pork <small>cerdo a fuego lento, pico de gallo, barbacoa</small></span><span>{{p:hamburguesas/Pulled pork}}</span></li>
+          <li><span>Cabra burger <small>queso de cabra, cebolla caramelizada</small></span><span>{{p:hamburguesas/Cabra burger}}</span></li>
+          <li><span>Ibérica <small>jamón ibérico, manchego, pimientos asados</small></span><span>{{p:hamburguesas/Ibérica}}</span></li>
+        </ul>
+        <a class="enlace-flecha" href="carta.html#hamburguesas">Todas las hamburguesas</a>
+      </div>
+    </div>
+
+    <div class="antojo" id="antojo-plato" role="tabpanel" aria-labelledby="tab-plato">
+      <h3 class="antojo__titulo">Un plato</h3>
+      <figure class="plato-circ antojo__foto">
+        {{foto:costilla|Costilla de cerdo a la barbacoa con patatas y verdura a la plancha, en plancha de hierro|(min-width: 900px) 34vw, 72vw}}
+        <p class="pegatina pegatina--esquina">A mediodía, menú del día</p>
+      </figure>
+      <div class="antojo__carta">
+        <p class="antojo__lema">Platos combinados para comer en serio. Y a mediodía, menú del día: llama y te decimos qué hay hoy.</p>
+        <ul class="lista-precios">
+          <li><span>Entrecot <small>350/400&nbsp;g de ternera</small></span><span>{{p:combinados/Entrecot}}</span></li>
+          <li><span>Costilla a la barbacoa <small>casera</small></span><span>{{p:combinados/Costilla a la barbacoa}}</span></li>
+          <li><span>Pollo al curry <small>casero, con arroz basmati</small></span><span>{{p:combinados/Pollo al curry}}</span></li>
+          <li><span>Plato de sepia <small>con salsa verde</small></span><span>{{p:combinados/Plato de sepia}}</span></li>
+        </ul>
+        <a class="enlace-flecha" href="carta.html#combinados">Todos los platos</a>
+      </div>
+    </div>
+
+    <div class="antojo" id="antojo-pasta" role="tabpanel" aria-labelledby="tab-pasta">
+      <h3 class="antojo__titulo">Pasta o ensalada</h3>
+      <figure class="plato-circ antojo__foto">
+        {{foto:pasta-del-mar|Pasta del mar de Gula: tagliatelle con mejillones, gambas y tomate|(min-width: 900px) 34vw, 72vw}}
+        <p class="pegatina pegatina--esquina">5 pastas · 5 ensaladas</p>
+      </figure>
+      <div class="antojo__carta">
+        <p class="antojo__lema">Para cuando la gula pide algo más ligero. O no tanto.</p>
+        <ul class="lista-precios">
+          <li><span>Pasta del mar <small>frutos del mar, salmón y gamba</small></span><span>{{p:pastas/Del mar}}</span></li>
+          <li><span>Pasta Gula <small>ternera, champiñones, demi-glace</small></span><span>{{p:pastas/Pasta Gula}}</span></li>
+          <li><span>Ensalada César</span><span>{{p:ensaladas/César}}</span></li>
+          <li><span>Ensalada Gula <small>salmón ahumado, aguacate, feta</small></span><span>{{p:ensaladas/Ensalada Gula}}</span></li>
+        </ul>
+        <a class="enlace-flecha" href="carta.html#pastas">Pastas y ensaladas</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · Bocadillos con nombre -->
+  <section class="bocatas" id="bocadillos" aria-labelledby="bocatas-titulo">
+    <div class="bocatas__in">
+      <div class="bocatas__cab">
+        <h2 class="titulo titulo--claro" id="bocatas-titulo">Quince bocadillos. Cada uno con su nombre.</h2>
+        <p>El almuerzo de Gula se pide por el nombre: un Republicano, un Cofrade, un Salvavidas. Los de calamar, sepia y escombros llevan mayonesa o picaeta, tú eliges.</p>
+        <div class="bocatas__fotos" aria-hidden="true">
+          <div class="plato-circ">{{foto:bocadillo-calamar|Bocadillo de calamar a la romana con mayonesa|(min-width: 900px) 18vw, 40vw}}</div>
+          <div class="plato-circ">{{foto:bocadillos-tabla|Varios bocadillos de Gula sobre tablas de madera|(min-width: 900px) 18vw, 40vw}}</div>
+        </div>
+      </div>
+      <ol class="bocatas__lista">
+          {{bloque:bocadillos}}
+      </ol>
+    </div>
+  </section>
+
+  <!-- 4 · Galería de fotos reales -->
+  <section class="cocina" aria-labelledby="cocina-titulo">
+    <div class="cocina__cab">
+      <h2 class="titulo titulo--claro" id="cocina-titulo">Recién salido de cocina</h2>
+      <p>Fotos de Gula, de platos de Gula. Sin trampa.</p>
+    </div>
+    <ul class="cocina__rejilla">
+      <li><figure>{{foto:alitas|Alitas de pollo al grill con sésamo y salsa, sobre tabla|(min-width: 900px) 25vw, 50vw}}<figcaption>Alitas al grill <span>{{p:entrantes/Alitas de pollo al grill}}</span></figcaption></figure></li>
+      <li><figure>{{foto:calamares|Calamares a la romana con limón y alioli|(min-width: 900px) 25vw, 50vw}}<figcaption>Calamar a la romana <span>{{p:entrantes/Calamar a la romana}}</span></figcaption></figure></li>
+      <li><figure>{{foto:pizza-pulled|Pizza Pulled pork en su caja|(min-width: 900px) 25vw, 50vw}}<figcaption>Pizza Pulled pork <span>{{p:pizzas/Pulled pork}}</span></figcaption></figure></li>
+      <li><figure>{{foto:albondigas|Albóndigas en salsa de tomate en plato hondo|(min-width: 900px) 25vw, 50vw}}<figcaption>Albóndigas en salsa <span>{{p:entrantes/Albóndigas en salsa de tomate}}</span></figcaption></figure></li>
+      <li><figure>{{foto:sepia|Sepia a la plancha con salsa verde y limón|(min-width: 900px) 25vw, 50vw}}<figcaption>Sepia con salsa verde <span>{{p:entrantes/Sepia a la plancha con salsa verde}}</span></figcaption></figure></li>
+      <li><figure>{{foto:burger-iberica|Hamburguesa Ibérica con jamón ibérico y patatas|(min-width: 900px) 25vw, 50vw}}<figcaption>Hamburguesa Ibérica <span>{{p:hamburguesas/Ibérica}}</span></figcaption></figure></li>
+      <li><figure>{{foto:pollo-curry|Pollo al curry casero con arroz basmati y ensalada|(min-width: 900px) 25vw, 50vw}}<figcaption>Pollo al curry <span>{{p:combinados/Pollo al curry}}</span></figcaption></figure></li>
+      <li><figure>{{foto:bravas|Patatas bravas con salsa brava y alioli|(min-width: 900px) 25vw, 50vw}}<figcaption>Patatas bravas <span>{{p:entrantes/Patatas bravas}}</span></figcaption></figure></li>
+    </ul>
+  </section>
+
+  <!-- 5 · Menú del día y fechas señaladas -->
+  <section class="dias" aria-labelledby="dias-titulo">
+    <h2 class="sr" id="dias-titulo">Menú del día y menús de fechas señaladas</h2>
+    <div class="dias__in">
+      <div class="dias__hoy">
+        <p class="dias__etiqueta">Cada día</p>
+        <h3 class="titulo">Menú del día a mediodía</h3>
+        <p>Cambia, así que no lo escribimos aquí para que luego no te encuentres otra cosa. Llámanos y te lo cantamos.</p>
+        <a class="tel-gigante" href="tel:{{telE164}}"><span>¿Qué hay hoy?</span> {{tel}}</a>
+      </div>
+      <div class="dias__senalados">
+        <p class="dias__etiqueta">Los días señalados</p>
+        <h3 class="titulo">Menús de fiesta, con reserva</h3>
+        <p>En Navidad, el 1 de enero y en Fiestas de Dénia preparamos menú cerrado. Así fueron los últimos:</p>
+        <ul class="fiestas">
+          <li><span class="fiestas__cuando">Fiestas de Dénia 2026</span><span class="fiestas__que">Dos menús: 22&nbsp;€ y 28&nbsp;€ por persona</span></li>
+          <li><span class="fiestas__cuando">1 de enero de 2026</span><span class="fiestas__que">32&nbsp;€ por persona</span></li>
+          <li><span class="fiestas__cuando">Navidad 2025</span><span class="fiestas__que">35&nbsp;€ por persona</span></li>
+        </ul>
+        <p class="dias__nota">Con bebida, pan y alioli, y postre o café. Las plazas son limitadas: pregunta por el próximo y reserva por teléfono.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 · Reseñas -->
+  <section class="opinan" aria-labelledby="opinan-titulo">
+    <div class="opinan__in">
+      <div class="opinan__nota">
+        <h2 class="sr" id="opinan-titulo">Lo que dice la gente en Google</h2>
+        <p class="opinan__cifra"><span>{{nota}}</span><span class="opinan__estrella" aria-hidden="true">★</span></p>
+        <p class="opinan__pie">en Google, con {{numResenas}} reseñas<br><span>(octubre de 2026)</span></p>
+      </div>
+      <ul class="opinan__citas">
+        <li><blockquote><p>«Hamburguesas, bocadillos, pizza, todo perfecto, ricos y bien precio.»</p></blockquote></li>
+        <li><blockquote><p>«El servicio rápido y los camareros súper amables y eficientes.»</p></blockquote></li>
+        <li><blockquote><p>«Hay terraza y mesas dentro. […] Al final nos quedamos serviditos.»</p></blockquote></li>
+      </ul>
+      <a class="enlace-flecha enlace-flecha--claro" href="{{resenas}}" rel="noopener" target="_blank">Leer todas las reseñas en Google <span class="sr">(se abre en otra pestaña)</span></a>
+    </div>
+  </section>
+
+  <!-- 7 · Dónde -->
+  <section class="donde" id="donde" aria-labelledby="donde-titulo">
+    <div class="donde__in">
+      <div class="donde__texto">
+        <p class="dias__etiqueta">Dónde estamos</p>
+        <h2 class="titulo" id="donde-titulo">Justo detrás de la estación de autobuses</h2>
+        <address>
+          <strong>{{calle}}</strong><br>{{cp}} {{localidad}} (Alicante)
+        </address>
+        <p>A la entrada de Dénia, junto al parque de Torrecremada. Si llegas en autobús, sales de la estación y estás aquí.</p>
+        <div class="donde__acciones">
+          <a class="boton boton--tinta" href="{{comoLlegar}}" rel="noopener" target="_blank">Cómo llegar <span class="sr">(Google Maps, se abre en otra pestaña)</span></a>
+          <a class="boton boton--borde" href="tel:{{telE164}}">Llamar · {{tel}}</a>
+        </div>
+        <div class="domicilio">
+          <p><strong>¿Mejor en casa?</strong> Pídelo para recoger por teléfono o a domicilio:</p>
+          <p class="domicilio__apps">
+            <a href="{{glovo}}" rel="noopener" target="_blank">Glovo <span class="sr">(se abre en otra pestaña)</span></a>
+            <a href="{{justEat}}" rel="noopener" target="_blank">Just Eat <span class="sr">(se abre en otra pestaña)</span></a>
+          </p>
+          <p class="domicilio__nota">En las apps de reparto los precios los marca cada plataforma y pueden ser distintos a los de la carta.</p>
+        </div>
+      </div>
+      <div class="donde__horario">
+        <h3 class="donde__sub">Horario</h3>
+        {{bloque:horario}}
+        <div class="mapa" data-mapa data-src="{{mapaEmbed}}">
+          <p class="mapa__dir">{{calle}}<br>{{cp}} {{localidad}}</p>
+          <p>El mapa se carga desde Google Maps solo si lo pides.</p>
+          <button class="boton boton--borde" type="button" data-mapa-boton>Ver el mapa aquí</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+{{> pie}}
+<script src="assets/js/gula.js" defer></script>
+</body>
+</html>
